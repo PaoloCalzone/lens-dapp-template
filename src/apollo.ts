@@ -1,33 +1,26 @@
+import { API_URL } from "@/constants";
+import { onError } from "@apollo/client/link/error";
+import jwtDecode from "jwt-decode";
+import toast from "react-hot-toast";
+
 import {
   ApolloClient,
   ApolloLink,
-  DefaultOptions,
-  from,
   HttpLink,
+  from,
   InMemoryCache,
-} from "@apollo/client/core";
-import { onError } from "@apollo/client/link/error";
-import fetch from "cross-fetch";
+} from "@apollo/client";
 
-import { getAuthenticationToken } from "./utils/state";
+const REFRESH_AUTHENTICATION_MUTATION = `
+    mutation Refresh($request: RefreshRequest!) {
+      refresh(request: $request) {
+        accessToken
+        refreshToken
+      }
+    }
+  `;
 
-const LENS_API = "https://api-mumbai.lens.dev";
-
-const defaultOptions = {
-  watchQuery: {
-    fetchPolicy: "no-cache",
-    errorPolicy: "ignore",
-  },
-  query: {
-    fetchPolicy: "no-cache",
-    errorPolicy: "all",
-  },
-};
-
-const httpLink = new HttpLink({
-  uri: LENS_API,
-  fetch,
-});
+const httpLink = new HttpLink({ uri: API_URL, fetch });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -40,24 +33,73 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-// example how you can pass in the x-access-token into requests using `ApolloLink`
 const authLink = new ApolloLink((operation, forward) => {
-  const token = getAuthenticationToken();
-  console.log("jwt token:", token);
+  const accessToken = localStorage.getItem("accessToken");
 
-  // Use the setContext method to set the HTTP headers.
-  operation.setContext({
-    headers: {
-      "x-access-token": token ? `Bearer ${token}` : "",
-    },
-  });
+  if (accessToken === "undefined" || !accessToken) {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("selectedProfile");
 
-  // Call the next link in the middleware chain.
-  return forward(operation);
+    return forward(operation);
+  } else {
+    operation.setContext({
+      headers: {
+        "x-access-token": accessToken ? `Bearer ${accessToken}` : "",
+      },
+    });
+
+    const { exp }: { exp: number } = jwtDecode(accessToken);
+
+    if (Date.now() >= exp * 1000) {
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          operationName: "Refresh",
+          query: REFRESH_AUTHENTICATION_MUTATION,
+          variables: {
+            request: { refreshToken: localStorage.getItem("refreshToken") },
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          operation.setContext({
+            headers: {
+              "x-access-token": accessToken
+                ? `Bearer ${res?.data?.refresh?.accessToken}`
+                : "",
+            },
+          });
+          localStorage.setItem("accessToken", res?.data?.refresh?.accessToken);
+          localStorage.setItem(
+            "refreshToken",
+            res?.data?.refresh?.refreshToken
+          );
+        })
+        .catch(() => {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+
+          toast.error(
+            `Something went wrong when authenticating with Lens! Please log out, log back in, and try again.`
+          );
+        });
+    }
+
+    return forward(operation);
+  }
 });
 
-export const apolloClient = new ApolloClient({
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
+export const nodeClient = new ApolloClient({
   link: from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache(),
-  defaultOptions: defaultOptions,
 });
+
+export default client;

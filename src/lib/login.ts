@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client/core";
-import { apolloClient } from "@/apollo-client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { useSignMessage } from "wagmi";
 
 const GET_CHALLENGE = `
@@ -7,18 +7,6 @@ query($request: ChallengeRequest!) {
   challenge(request: $request) { text }
 }
 `;
-
-const generateChallenge = (address: string) => {
-  return apolloClient.query({
-    query: gql(GET_CHALLENGE),
-    variables: {
-      request: {
-        address,
-      },
-      fetchPolicy: "no-cache",
-    },
-  });
-};
 
 const AUTHENTICATION = `
 mutation($request: SignedAuthChallenge!) { 
@@ -29,24 +17,20 @@ mutation($request: SignedAuthChallenge!) {
 }
 `;
 
-const authenticate = (address: string, signature: string) => {
-  return apolloClient.mutate({
-    mutation: gql(AUTHENTICATION),
-    variables: {
-      request: {
-        address,
-        signature,
-      },
-    },
-  });
-};
-
 export const useLogin = async (
   address: string
 ): Promise<{
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken: any;
+  refreshToken: any;
+  loading?: boolean;
+  error?: Error;
 }> => {
+  const [loadChallenge, { error: errorChallenge, loading: challengeLoading }] =
+    useLazyQuery(gql(GET_CHALLENGE), {
+      fetchPolicy: "no-cache",
+    });
+  const [authenticate, { error: errorAuthenticate, loading: authLoading }] =
+    useMutation(gql(AUTHENTICATION));
   const {
     signMessageAsync,
     isLoading: signLoading,
@@ -61,18 +45,23 @@ export const useLogin = async (
       refreshToken: localStorage.getItem("refreshToken"),
     };
   }
-  const challengeResponse = await generateChallenge(address);
+  const challengeResponse = await loadChallenge({ variables: { address } });
   const signature = await signMessageAsync(
     challengeResponse.data.challenge.text
   );
   const {
     data: { authenticate: tokens },
-  } = await authenticate(address, signature);
+  } = await authenticate({ variables: { address, signature } });
   console.log("Acess tokens", tokens.accessTokens);
-  localStorage.setItem("accessToken", tokens.accessToken);
-  localStorage.setItem("refreshToken", tokens.refreshToken);
+  const accessToken = tokens.accessToken;
+  const refreshToken = tokens.refreshToken;
+  localStorage.setItem("accessToken", accessToken);
+  localStorage.setItem("refreshToken", refreshToken);
 
-  // TODO return tokens, loading, errors
-  // In button component, implement login and logout logic
-  return tokens;
+  return {
+    accessToken,
+    refreshToken,
+    loading: challengeLoading || signLoading || authLoading,
+    error: errorChallenge || errorSign || errorAuthenticate,
+  };
 };

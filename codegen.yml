@@ -1,5 +1,5 @@
 overwrite: true
-schema: "https://api-mumbai.lens.dev"
+schema: ${NEXT_PUBLIC_LENS_API_MUMBAI}
 documents: "**/*.{gql,graphql}"
 generates:
   ./src/types/lens.ts:

@@ -1,6 +1,9 @@
 import { chain } from "wagmi";
 
-export const IS_MAINNET = process.env.NEXT_PUBLIC_NETWORK == "mainnet";
+export const APP_ID = "lenstok";
+export const APP_NAME = "Lenstok";
+
+export const IS_MAINNET = process.env.NEXT_PUBLIC_NETWORK === "mainnet";
 export const CHAIN = IS_MAINNET ? chain.polygon : chain.polygonMumbai;
 export const API_URL = IS_MAINNET
   ? "https://api.lens.dev"

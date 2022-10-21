@@ -1,0 +1,13 @@
+overwrite: true
+schema: "https://api-mumbai.lens.dev"
+documents: "**/*.{gql,graphql}"
+generates:
+  ./src/types/lens.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node
+      - fragment-matcher
+    config:
+      fetcher: fetch
+      dedupeFragments: true

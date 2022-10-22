@@ -1,14 +1,21 @@
 import "../styles/globals.css";
+import Loading from "@components/Loading";
 import type { AppProps } from "next/app";
-import { ApolloProvider } from "@apollo/client";
-import { apolloClient } from "@/apollo-client";
+import { lazy, Suspense } from "react";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const Providers = lazy(() => import("@components/Providers"));
+const Layout = lazy(() => import("@components/Layout"));
+
+const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <Suspense fallback={<Loading />}>
+      <Providers>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Providers>
+    </Suspense>
   );
-}
+};
 
-export default MyApp;
+export default App;

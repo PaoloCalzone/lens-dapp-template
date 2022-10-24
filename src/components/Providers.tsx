@@ -1,17 +1,16 @@
 import { ApolloProvider } from "@apollo/client";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
-import { ALCHEMY_KEY, ALCHEMY_RPC, CHAIN_ID, IS_MAINNET } from "src/constants";
+import { INFURA_ID, INFURA_RPC, CHAIN_ID, IS_MAINNET } from "src/constants";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { infuraProvider } from "wagmi/providers/infura";
+import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-
 import { apolloClient } from "@/apollo-client";
-
 const { chains, provider } = configureChains(
   [IS_MAINNET ? chain.polygon : chain.polygonMumbai],
-  [alchemyProvider({ apiKey: ALCHEMY_KEY })]
+  [infuraProvider({ apiKey: INFURA_ID }), publicProvider()]
 );
 
 const connectors = () => {
@@ -22,7 +21,7 @@ const connectors = () => {
     }),
     new WalletConnectConnector({
       chains,
-      options: { rpc: { [CHAIN_ID]: ALCHEMY_RPC } },
+      options: { rpc: { [CHAIN_ID]: INFURA_RPC } },
     }),
   ];
 };

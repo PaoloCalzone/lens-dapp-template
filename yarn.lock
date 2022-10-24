@@ -1052,7 +1052,7 @@
   dependencies:
     "regenerator-runtime" "^0.13.4"
 
-"@babel/template@^7.0.0", "@babel/template@^7.15.4", "@babel/template@^7.18.10":
+"@babel/template@^7.0.0", "@babel/template@^7.18.10":
   "integrity" "sha512-TI+rCtooWHr3QJ27kJxfjutghu44DLnasDMwpDqCXVTal9RLp3RSYNh4NdBrRP2cQAoG9A8juOQl6P6oZG4JxA=="
   "resolved" "https://registry.npmjs.org/@babel/template/-/template-7.18.10.tgz"
   "version" "7.18.10"
@@ -1473,14 +1473,6 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@graphql-codegen/add@^3.2.1":
-  "integrity" "sha512-w82H/evh8SSGoD3K6K/Oh3kqSdbuU+TgHqMYmmHFxtH692v2xhN/cu1s/TotBQ7r4mO7OQutze7dde2tZEXGEQ=="
-  "resolved" "https://registry.npmjs.org/@graphql-codegen/add/-/add-3.2.1.tgz"
-  "version" "3.2.1"
-  dependencies:
-    "@graphql-codegen/plugin-helpers" "^2.6.2"
-    "tslib" "~2.4.0"
-
 "@graphql-codegen/cli@2.13.7":
   "integrity" "sha512-Rpk4WWrDgkDoVELftBr7/74MPiYmCITEF2+AWmyZZ2xzaC9cO2PqzZ+OYDEBNWD6UEk0RrIfVSa+slDKjhY59w=="
   "resolved" "https://registry.npmjs.org/@graphql-codegen/cli/-/cli-2.13.7.tgz"
@@ -1523,24 +1515,6 @@
     "yaml" "^1.10.0"
     "yargs" "^17.0.0"
 
-"@graphql-codegen/client-preset@1.1.0":
-  "integrity" "sha512-XZCkK7LVEaj2mXdLrkrxKlAUVKPuEPVlvP+halrfAoKYELTxHx+tgQc9PzhKLlijaHMbH76nEstDcc1aoXUgtA=="
-  "resolved" "https://registry.npmjs.org/@graphql-codegen/client-preset/-/client-preset-1.1.0.tgz"
-  "version" "1.1.0"
-  dependencies:
-    "@babel/helper-plugin-utils" "^7.14.5"
-    "@babel/template" "^7.15.4"
-    "@graphql-codegen/add" "^3.2.1"
-    "@graphql-codegen/gql-tag-operations" "1.5.5"
-    "@graphql-codegen/plugin-helpers" "^2.6.2"
-    "@graphql-codegen/typed-document-node" "^2.3.5"
-    "@graphql-codegen/typescript" "^2.7.5"
-    "@graphql-codegen/typescript-operations" "^2.5.5"
-    "@graphql-codegen/visitor-plugin-common" "^2.13.0"
-    "@graphql-tools/utils" "^8.8.0"
-    "@graphql-typed-document-node/core" "3.1.1"
-    "tslib" "~2.4.0"
-
 "@graphql-codegen/core@2.6.2":
   "integrity" "sha512-58T5yf9nEfAhDwN1Vz1hImqpdJ/gGpCGUaroQ5tqskZPf7eZYYVkEXbtqRZZLx1MCCKwjWX4hMtTPpHhwKCkng=="
   "resolved" "https://registry.npmjs.org/@graphql-codegen/core/-/core-2.6.2.tgz"
@@ -1557,26 +1531,6 @@
   "version" "3.3.1"
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.6.2"
-    "tslib" "~2.4.0"
-
-"@graphql-codegen/gql-tag-operations@1.5.5":
-  "integrity" "sha512-FldzQsgKJbo9suATTXfTMS+Vb1CcjedDPXERHnJlTwHs/z1cRp2jZojeOkZVAHAvCb93I/eNgBfBHqxhNXnAjg=="
-  "resolved" "https://registry.npmjs.org/@graphql-codegen/gql-tag-operations/-/gql-tag-operations-1.5.5.tgz"
-  "version" "1.5.5"
-  dependencies:
-    "@graphql-codegen/plugin-helpers" "^2.6.2"
-    "@graphql-codegen/visitor-plugin-common" "2.13.0"
-    "@graphql-tools/utils" "^8.8.0"
-    "auto-bind" "~4.0.0"
-    "tslib" "~2.4.0"
-
-"@graphql-codegen/introspection@2.2.1":
-  "integrity" "sha512-083tu9rSLL0k9LrAyGt1AjGQI/O9gX3w1UliaufLc3mofDSt7iV04tT9VJRuk4IoBvyPZ/8YCs5zIpmt/GexPA=="
-  "resolved" "https://registry.npmjs.org/@graphql-codegen/introspection/-/introspection-2.2.1.tgz"
-  "version" "2.2.1"
-  dependencies:
-    "@graphql-codegen/plugin-helpers" "^2.6.2"
-    "@graphql-codegen/visitor-plugin-common" "^2.12.1"
     "tslib" "~2.4.0"
 
 "@graphql-codegen/plugin-helpers@^2.6.2":
@@ -1622,17 +1576,6 @@
     "auto-bind" "~4.0.0"
     "tslib" "~2.4.0"
 
-"@graphql-codegen/typescript-react-apollo@^3.3.5":
-  "integrity" "sha512-7kqlkjPrR99Z3iO/sS4waov44DwVPtXTaL70IXACNfcF/RgYAMQwgV1u1iArx6x7bVA//sQtEAMD1qOFMvrkOQ=="
-  "resolved" "https://registry.npmjs.org/@graphql-codegen/typescript-react-apollo/-/typescript-react-apollo-3.3.5.tgz"
-  "version" "3.3.5"
-  dependencies:
-    "@graphql-codegen/plugin-helpers" "^2.6.2"
-    "@graphql-codegen/visitor-plugin-common" "2.13.0"
-    "auto-bind" "~4.0.0"
-    "change-case-all" "1.0.14"
-    "tslib" "~2.4.0"
-
 "@graphql-codegen/typescript@^2.7.5":
   "integrity" "sha512-NZMViINr0KEH+DgtOE3BDWkdrisX7cz3/+m6M73Sa2cMM1udTTCpLbNqFIHRmGl1UyfwjdZB32YoF/fxshjV/Q=="
   "resolved" "https://registry.npmjs.org/@graphql-codegen/typescript/-/typescript-2.7.5.tgz"
@@ -1644,7 +1587,7 @@
     "auto-bind" "~4.0.0"
     "tslib" "~2.4.0"
 
-"@graphql-codegen/visitor-plugin-common@^2.12.1", "@graphql-codegen/visitor-plugin-common@^2.13.0", "@graphql-codegen/visitor-plugin-common@2.13.0":
+"@graphql-codegen/visitor-plugin-common@2.13.0":
   "integrity" "sha512-8lKw4l8W6yKaqrxx025eB6+lRMWaBKedbKjC9UyLhXAnqTi3tgaRKOBo4zvl1+KzE6R41Ruov9UcGD7OjgmBrw=="
   "resolved" "https://registry.npmjs.org/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-2.13.0.tgz"
   "version" "2.13.0"
@@ -1874,7 +1817,7 @@
     "tslib" "^2.4.0"
     "value-or-promise" "1.0.11"
 
-"@graphql-typed-document-node/core@^3.1.1", "@graphql-typed-document-node/core@3.1.1":
+"@graphql-typed-document-node/core@^3.1.1":
   "integrity" "sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg=="
   "resolved" "https://registry.npmjs.org/@graphql-typed-document-node/core/-/core-3.1.1.tgz"
   "version" "3.1.1"
@@ -5395,7 +5338,7 @@
     "extract-files" "^9.0.0"
     "form-data" "^3.0.0"
 
-"graphql-tag@^2.0.0", "graphql-tag@^2.11.0", "graphql-tag@^2.12.6":
+"graphql-tag@^2.11.0", "graphql-tag@^2.12.6":
   "integrity" "sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg=="
   "resolved" "https://registry.npmjs.org/graphql-tag/-/graphql-tag-2.12.6.tgz"
   "version" "2.12.6"

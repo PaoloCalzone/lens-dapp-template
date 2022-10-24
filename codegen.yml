@@ -1,6 +1,7 @@
-overwrite: true
 schema: ${NEXT_PUBLIC_LENS_API_MUMBAI}
-documents: "**/*.{gql,graphql}"
+
+documents: ["./src/graphql/**/*.graphql"]
+
 generates:
   ./src/types/lens.ts:
     plugins:

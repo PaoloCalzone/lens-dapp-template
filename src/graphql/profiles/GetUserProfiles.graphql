@@ -1,5 +1,5 @@
-query ($address: EthereumAddress!) {
-  profiles(request: { ownedBy: [$address], limit: 5 }) {
+query GetUserProfiles($address: EthereumAddress!) {
+  profiles(request: { ownedBy: [$address] }) {
     items {
       id
       isDefault

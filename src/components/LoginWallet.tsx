@@ -6,11 +6,16 @@ import {
   GetChallengeDocument,
   GetUserProfilesDocument,
 } from "@/types/lens";
+import { useAppPersistStore, useAppStore } from "src/store/app";
 import { useAccount, useNetwork, useConnect, useSignMessage } from "wagmi";
 import type { Connector } from "wagmi";
 import toast from "react-hot-toast";
 
 const LoginWallet: FC = () => {
+  const setProfiles = useAppStore((state) => state.setProfiles);
+  const setCurrentProfile = useAppStore((state) => state.setCurrentProfile);
+  const setProfileId = useAppPersistStore((state) => state.setProfileId);
+
   const [hasConnected, setHasConnected] = useState(false);
   const { address, connector: activeConnector } = useAccount();
   const { connectors, error, connectAsync } = useConnect();
@@ -68,7 +73,7 @@ const LoginWallet: FC = () => {
       });
 
       if (profilesData?.profiles?.items?.length === 0) {
-        //setHasProfile(false);
+        setHasProfile(false);
       } else {
         const profiles: any = profilesData?.profiles?.items
           ?.slice()
@@ -77,9 +82,9 @@ const LoginWallet: FC = () => {
             a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1
           );
         const currentProfile = profiles[0];
-        //setProfiles(profiles);
-        //setCurrentProfile(currentProfile);
-        //setProfileId(currentProfile.id);
+        setProfiles(profiles);
+        setCurrentProfile(currentProfile);
+        setProfileId(currentProfile.id);
       }
     } catch {}
   };

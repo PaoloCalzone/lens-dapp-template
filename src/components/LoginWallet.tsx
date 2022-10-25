@@ -73,14 +73,9 @@ const LoginWallet: FC = () => {
       });
 
       if (profilesData?.profiles?.items?.length === 0) {
-        setHasProfile(false);
+        return toast.error("You have no lens profile yet, please create one");
       } else {
-        const profiles: any = profilesData?.profiles?.items
-          ?.slice()
-          ?.sort((a, b) => Number(a.id) - Number(b.id))
-          ?.sort((a, b) =>
-            a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1
-          );
+        const profiles: any = profilesData?.profiles?.items;
         const currentProfile = profiles[0];
         setProfiles(profiles);
         setCurrentProfile(currentProfile);

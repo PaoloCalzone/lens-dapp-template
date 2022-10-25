@@ -6,6 +6,7 @@ import {
   GetChallengeDocument,
   GetUserProfilesDocument,
 } from "@/types/lens";
+import { CHAIN_ID } from "src/constants";
 import { useAppPersistStore, useAppStore } from "src/store/app";
 import { useAccount, useNetwork, useConnect, useSignMessage } from "wagmi";
 import type { Connector } from "wagmi";
@@ -16,6 +17,7 @@ const LoginWallet: FC = () => {
   const setCurrentProfile = useAppStore((state) => state.setCurrentProfile);
   const setProfileId = useAppPersistStore((state) => state.setProfileId);
 
+  const { chain } = useNetwork();
   const [hasConnected, setHasConnected] = useState(false);
   const { address, connector: activeConnector } = useAccount();
   const { connectors, error, connectAsync } = useConnect();
@@ -86,14 +88,14 @@ const LoginWallet: FC = () => {
 
   return activeConnector?.id ? (
     <div>
-      {hasConnected ? (
-        <button></button>
+      {chain?.id === CHAIN_ID ? (
+        <button onClick={() => handleLogin()}>Login In</button>
       ) : (
-        <button onClick={() => handleLogin()}>login</button>
+        <button>Switch Network</button>
       )}
     </div>
   ) : (
-    <button onClick={() => onConnect(connectors[0])}>connect</button>
+    <button onClick={() => onConnect(connectors[0])}>Connect</button>
   );
 };
 

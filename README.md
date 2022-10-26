@@ -10,6 +10,13 @@ npm install
 yarn
 ```
 
+Create an env.local file (like the env.example one)
+Then set up your endpoint (infura / alchemy / ...).
+Explain how
+
+Run `npm run dev`. It will generate lens types and documents that will
+be used in your queries and mutation later on.
+
 ## Stack
 
 - apollo

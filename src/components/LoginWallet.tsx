@@ -8,7 +8,13 @@ import {
 } from "@/types/lens";
 import { CHAIN_ID } from "src/constants";
 import { useAppPersistStore, useAppStore } from "src/store/app";
-import { useAccount, useNetwork, useConnect, useSignMessage } from "wagmi";
+import {
+  useAccount,
+  useNetwork,
+  useConnect,
+  useSignMessage,
+  useSwitchNetwork,
+} from "wagmi";
 import type { Connector } from "wagmi";
 import toast from "react-hot-toast";
 
@@ -18,6 +24,7 @@ const LoginWallet: FC = () => {
   const setProfileId = useAppPersistStore((state) => state.setProfileId);
 
   const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
   const [hasConnected, setHasConnected] = useState(false);
   const { address, connector: activeConnector } = useAccount();
   const { connectors, error, connectAsync } = useConnect();
@@ -91,7 +98,17 @@ const LoginWallet: FC = () => {
       {chain?.id === CHAIN_ID ? (
         <button onClick={() => handleLogin()}>Login In</button>
       ) : (
-        <button>Switch Network</button>
+        <button
+          onClick={() => {
+            if (switchNetwork) {
+              switchNetwork(CHAIN_ID);
+            } else {
+              toast.error("Please change your network wallet!");
+            }
+          }}
+        >
+          Switch Network
+        </button>
       )}
     </div>
   ) : (

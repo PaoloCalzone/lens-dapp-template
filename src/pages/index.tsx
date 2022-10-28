@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import LoginWallet from "@/components/LoginWallet";
+import LoginButton from "@/components/LoginButton";
 
 const Home: NextPage = () => {
   return (
     <div>
-      <LoginWallet />
+      <LoginButton />
     </div>
   );
 };

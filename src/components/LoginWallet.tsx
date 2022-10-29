@@ -19,6 +19,7 @@ import type { Connector } from "wagmi";
 import toast from "react-hot-toast";
 
 const LoginWallet: FC = () => {
+  const currentProfile = useAppStore((state) => state.currentProfile);
   const setProfiles = useAppStore((state) => state.setProfiles);
   const setCurrentProfile = useAppStore((state) => state.setCurrentProfile);
   const setProfileId = useAppPersistStore((state) => state.setProfileId);

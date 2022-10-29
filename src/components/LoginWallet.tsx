@@ -96,7 +96,7 @@ const LoginWallet: FC = () => {
   return activeConnector?.id ? (
     <div>
       {chain?.id === CHAIN_ID ? (
-        <button onClick={() => handleLogin()}>Login In</button>
+        <button onClick={() => handleLogin()}>Login In with Lens</button>
       ) : (
         <button
           onClick={() => {
@@ -112,7 +112,9 @@ const LoginWallet: FC = () => {
       )}
     </div>
   ) : (
-    <button onClick={() => onConnect(connectors[0])}>Connect</button>
+    <button onClick={() => onConnect(connectors[0])}>
+      Connect your wallet
+    </button>
   );
 };
 

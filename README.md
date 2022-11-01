@@ -30,9 +30,9 @@ be used in your queries and mutation later on.
 # Put an example here
 ```
 
-## login flow
+## Login flow
 
-1. In that file, the user clicks on connect button, selects its account. Under the hood, Lens API is called for authentication and if the user has got an account, sends back a token that is set in localstorage
+1. In that file, the user clicks on connect button, selects its account. Under the hood, Lens API is called for authentication and if the user has got an account, sends back a token that is set in localstorage.
 2. During re-renderig, apollo (link to the file) set the token in his header
 3. Login logic(login, logout, errors) is in that file.
 

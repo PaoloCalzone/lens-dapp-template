@@ -1,5 +1,4 @@
-import { FC, useState, ReactNode, useCallback, useEffect } from "react";
-import { gql } from "@apollo/client/core";
+import type { Dispatch, FC } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   AuthenticateDocument,
@@ -16,9 +15,16 @@ import {
   useSwitchNetwork,
 } from "wagmi";
 import type { Connector } from "wagmi";
+import { XCircleIcon } from "@heroicons/react/24/solid";
+import clsx from "clsx";
 import toast from "react-hot-toast";
 
-const LoginWallet: FC = () => {
+interface Props {
+  setHasConnected: Dispatch<boolean>;
+  setHasProfile: Dispatch<boolean>;
+}
+
+const LoginWallet: FC<Props> = ({ setHasConnected, setHasProfile }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
   const setProfiles = useAppStore((state) => state.setProfiles);
   const setCurrentProfile = useAppStore((state) => state.setCurrentProfile);
@@ -26,7 +32,6 @@ const LoginWallet: FC = () => {
 
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-  const [hasConnected, setHasConnected] = useState(false);
   const { address, connector: activeConnector } = useAccount();
   const { connectors, error, connectAsync } = useConnect();
   const { signMessageAsync, isLoading: signLoading } = useSignMessage();
@@ -83,7 +88,7 @@ const LoginWallet: FC = () => {
       });
 
       if (profilesData?.profiles?.items?.length === 0) {
-        return toast.error("You have no lens profile yet, please create one");
+        setHasProfile(false);
       } else {
         const profiles: any = profilesData?.profiles?.items;
         const currentProfile = profiles[0];
@@ -113,9 +118,52 @@ const LoginWallet: FC = () => {
       )}
     </div>
   ) : (
-    <button onClick={() => onConnect(connectors[0])}>
-      Connect your wallet
-    </button>
+    <div className="inline-block overflow-hidden space-y-3 w-full text-left align-middle transition-all transform">
+      {connectors.map((connector) => {
+        return (
+          <button
+            type="button"
+            key={connector.id}
+            className={clsx(
+              {
+                "hover:bg-gray-100 dark:hover:bg-gray-700":
+                  connector.id !== activeConnector?.id,
+              },
+              "w-full flex items-center space-x-2.5 justify-center px-4 py-3 overflow-hidden rounded-xl border dark:border-gray-700/80 outline-none"
+            )}
+            onClick={() => onConnect(connector)}
+            /* disabled={
+              mounted
+                ? !connector.ready || connector.id === activeConnector?.id
+                : false
+            } */
+          >
+            <span className="flex justify-between items-center w-full">
+              {/*  {mounted
+                ? connector.id === "injected"
+                  ? "Browser Wallet"
+                  : connector.name
+                : connector.name}
+              {mounted ? !connector.ready && " (unsupported)" : ""} */}
+            </span>
+            {/* <img
+              src={getWalletLogo(connector.name)}
+              draggable={false}
+              className="w-6 h-6"
+              height={24}
+              width={24}
+              alt={connector.id}
+            /> */}
+          </button>
+        );
+      })}
+      {error?.message ? (
+        <div className="flex items-center space-x-1 text-red-500">
+          <XCircleIcon className="w-5 h-5" />
+          <div>{error?.message ?? "Failed to connect"}</div>
+        </div>
+      ) : null}
+    </div>
   );
 };
 
